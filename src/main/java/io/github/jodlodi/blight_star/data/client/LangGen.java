@@ -26,7 +26,7 @@ public class LangGen extends LanguageProvider {
 		this.addBlock(ModBlocks.ROT_BLOCK, "Rot Block");
 		this.addItem(ModItems.ROT_BERRY, "Rot Berry");
 
-		this.addTab(ModTabs.EXAMPLE_TAB, "Blight Star");
+		this.addTab(ModTabs.BLIGHT_STAR, "Blight Star");
 
 		this.addConfigValue(Config.LOG_DIRT_BLOCK, "Pie or Die");
 		this.addConfigValue(Config.MAGIC_NUMBER, "Pie or Maybe");
