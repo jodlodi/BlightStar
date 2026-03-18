@@ -4,6 +4,7 @@
   "blight_star.configuration.magicNumber": "Pie or Maybe",
   "blight_star.configuration.magicNumberIntroduction": "Pie or Suck",
   "block.blight_star.rot_block": "Rot Block",
+  "block.blight_star.sprout": "Sprout",
   "item.blight_star.rot_berry": "Rot Berry",
   "itemGroup.blight_star": "Blight Star"
 }

@@ -2,6 +2,7 @@ package io.github.jodlodi.blight_star.init;
 
 import io.github.jodlodi.blight_star.BlightStar;
 import io.github.jodlodi.blight_star.block.RotBlock;
+import io.github.jodlodi.blight_star.block.SproutBlock;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -25,11 +26,21 @@ public class ModBlocks {
 			.sound(SoundType.MUD)
 			.randomTicks()
 			.strength(0.5F)
-			.speedFactor(0.4F)
+			.speedFactor(0.8F)
 			.isValidSpawn(Blocks::always)
 			.isRedstoneConductor(ModBlocks::always)
 			.isViewBlocking(ModBlocks::always)
 			.isSuffocating(ModBlocks::always)
+	));
+
+	public static final DeferredBlock<SproutBlock> SPROUT = BLOCKS.register("sprout", () -> new SproutBlock(BlockBehaviour.Properties.of()
+			.mapColor(MapColor.TERRACOTTA_GREEN)
+			.sound(SoundType.MUD)
+			.forceSolidOn()
+			.requiresCorrectToolForDrops()
+			.strength(3.0F, 6.0F)
+			.speedFactor(0.8F)
+			.noOcclusion()
 	));
 
 	private static boolean always(BlockState state, BlockGetter blockGetter, BlockPos pos) {

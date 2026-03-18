@@ -2,6 +2,7 @@ package io.github.jodlodi.blight_star;
 
 import com.mojang.logging.LogUtils;
 import io.github.jodlodi.blight_star.init.ModBlocks;
+import io.github.jodlodi.blight_star.init.ModInterestPoints;
 import io.github.jodlodi.blight_star.init.ModItems;
 import io.github.jodlodi.blight_star.init.ModTabs;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -30,6 +31,7 @@ public class BlightStar {
     public BlightStar(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
 
+        ModInterestPoints.POINTS_OF_INTEREST.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         ModTabs.TABS.register(modEventBus);

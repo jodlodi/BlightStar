@@ -1,6 +1,7 @@
 package io.github.jodlodi.blight_star.block;
 
 import com.mojang.serialization.MapCodec;
+import io.github.jodlodi.blight_star.init.ModInterestPoints;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -10,7 +11,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
-import net.minecraft.world.entity.ai.village.poi.PoiTypes;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
@@ -63,7 +63,7 @@ public class RotBlock extends Block {
 		ResourceKey<Biome> target = Biomes.SWAMP;
 		Holder<Biome> biome = level.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(target);
 
-		if (level.getPoiManager().getCountInRange(holder -> holder.is(PoiTypes.LIGHTNING_ROD), pos, 16, PoiManager.Occupancy.ANY) > 0L) {
+		if (level.getPoiManager().getCountInRange(holder -> holder.is(ModInterestPoints.SPROUT.getKey()), pos, 16, PoiManager.Occupancy.ANY) > 0L) {
 			for (int i = 0; i < 8; i++) {
 				BlockPos offset = pos.offset(random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1);
 				if (level.getBlockState(offset).isSolidRender(level, offset)) level.setBlockAndUpdate(offset, blockstate);

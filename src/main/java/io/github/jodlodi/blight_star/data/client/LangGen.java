@@ -24,6 +24,8 @@ public class LangGen extends LanguageProvider {
 	@Override
 	protected void addTranslations() {
 		this.addBlock(ModBlocks.ROT_BLOCK, "Rot Block");
+		this.addBlock(ModBlocks.SPROUT, "Sprout");
+
 		this.addItem(ModItems.ROT_BERRY, "Rot Berry");
 
 		this.addTab(ModTabs.BLIGHT_STAR, "Blight Star");

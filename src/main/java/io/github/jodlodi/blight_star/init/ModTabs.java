@@ -21,7 +21,8 @@ public class ModTabs {
 			.withTabsBefore(CreativeModeTabs.COMBAT)
 			.icon(() -> ModItems.ROT_BERRY.get().getDefaultInstance())
 			.displayItems((parameters, output) -> {
-				output.accept(ModItems.ROT_BERRY);
 				output.accept(ModItems.ROT_BLOCK);
+				output.accept(ModItems.SPROUT);
+				output.accept(ModItems.ROT_BERRY);
 			}).build());
 }

@@ -29,6 +29,7 @@ public class ItemModelGen extends ItemModelProvider {
 	protected void registerModels() {
 		this.singleTex(ModItems.ROT_BERRY);
 		this.toBlock(ModBlocks.ROT_BLOCK.get());
+		this.toBlock(ModBlocks.SPROUT.get());
 	}
 
 	private ItemModelBuilder singleTex(DeferredHolder<?, ?> item) {
@@ -46,7 +47,6 @@ public class ItemModelGen extends ItemModelProvider {
 	private void toBlockModel(Block b, ResourceLocation model) {
 		withExistingParent(BuiltInRegistries.BLOCK.getKey(b).getPath(), model);
 	}
-
 
 	private ItemModelBuilder generated(String name, ResourceLocation... layers) {
 		return buildItem(name, "item/generated", 0, layers);

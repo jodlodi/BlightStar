@@ -27,7 +27,6 @@ public class DataGen {
 		generator.addProvider(event.includeClient(), new BlockModelGen(output, helper));
 		generator.addProvider(event.includeClient(), new ItemModelGen(output, helper));
 
-
 		generator.addProvider(event.includeClient(), new LangGen(output));
 	}
 }
