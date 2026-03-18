@@ -17,7 +17,7 @@ public class ModTabs {
 	public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, BlightStar.ID);
 
 	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> BLIGHT_STAR = TABS.register("blight_star", () -> CreativeModeTab.builder()
-			.title(Component.translatable("itemGroup.blight_star")) //The language key for the title of your CreativeModeTab
+			.title(Component.translatable("itemGroup.blight_star"))
 			.withTabsBefore(CreativeModeTabs.COMBAT)
 			.icon(() -> ModItems.ROT_BERRY.get().getDefaultInstance())
 			.displayItems((parameters, output) -> {
