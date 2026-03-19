@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
-      "model": "blight_star:block/rot_block"
+    "age=0": {
+      "model": "blight_star:block/rot_block_0"
+    },
+    "age=1": {
+      "model": "blight_star:block/rot_block_1"
+    },
+    "age=2": {
+      "model": "blight_star:block/rot_block_2"
+    },
+    "age=3": {
+      "model": "blight_star:block/rot_block_3"
+    },
+    "age=4": {
+      "model": "blight_star:block/rot_block_4"
     }
   }
 }

@@ -28,7 +28,7 @@ public class ItemModelGen extends ItemModelProvider {
 	@Override
 	protected void registerModels() {
 		this.singleTex(ModItems.ROT_BERRY);
-		this.toBlock(ModBlocks.ROT_BLOCK.get());
+		this.toBlockModel(ModBlocks.ROT_BLOCK.get(), BuiltInRegistries.BLOCK.getKey(ModBlocks.ROT_BLOCK.get()).getPath() + "_0");
 		this.toBlock(ModBlocks.SPROUT.get());
 	}
 

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "blight_star:block/rot_block"
+    "all": "blight_star:block/0"
   }
 }

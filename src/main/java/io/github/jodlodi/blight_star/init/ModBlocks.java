@@ -36,6 +36,7 @@ public class ModBlocks {
 	public static final DeferredBlock<SproutBlock> SPROUT = BLOCKS.register("sprout", () -> new SproutBlock(BlockBehaviour.Properties.of()
 			.mapColor(MapColor.TERRACOTTA_GREEN)
 			.sound(SoundType.MUD)
+			.randomTicks()
 			.forceSolidOn()
 			.requiresCorrectToolForDrops()
 			.strength(3.0F, 6.0F)
