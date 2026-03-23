@@ -1,6 +1,7 @@
 package io.github.jodlodi.blight_star.data.client;
 
 import io.github.jodlodi.blight_star.BlightStar;
+import io.github.jodlodi.blight_star.block.BlightBlock;
 import io.github.jodlodi.blight_star.block.RotBlock;
 import io.github.jodlodi.blight_star.init.ModBlocks;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -9,29 +10,33 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.ModelProvider;
+import net.neoforged.neoforge.client.model.generators.loaders.CompositeModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredBlock;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-
-import java.util.Map;
 
 import static io.github.jodlodi.blight_star.BlightStar.prefix;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class BlockModelGen extends BlockStateProvider {
+	protected static final ResourceLocation SOLID = ResourceLocation.withDefaultNamespace("solid");
+	protected static final ResourceLocation CUTOUT = ResourceLocation.withDefaultNamespace("cutout");
+	protected static final ResourceLocation TRANSLUCENT = ResourceLocation.withDefaultNamespace("translucent");
+
 	public BlockModelGen(PackOutput output, ExistingFileHelper exFileHelper) {
 		super(output, BlightStar.ID, exFileHelper);
 	}
 
 	@Override
 	protected void registerStatesAndModels() {
+		this.makeBlightBlock(ModBlocks.SPECTRAL_SAND);
+
 		this.getVariantBuilder(ModBlocks.ROT_BLOCK.get()).forAllStates(state -> {
 			switch (state.getValue(RotBlock.AGE)) {
 				case 0 -> {
@@ -53,6 +58,54 @@ public class BlockModelGen extends BlockStateProvider {
 		});
 
 		this.simpleBlockExisting(ModBlocks.SPROUT.get());
+	}
+
+	public <T extends Block & BlightBlock> void makeBlightBlock(DeferredBlock<T> block) {
+		BlockModelBuilder zero = models().withExistingParent(block.getId().getPath() + "/zero", "block/cube_all").texture("all", prefix(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + 0));
+		this.getVariantBuilder(block.get()).forAllStates(state -> {
+			int blight = state.getValue(block.get().getProperty());
+			if (blight == 0) return ConfiguredModel.builder().modelFile(zero).build();
+
+			return new ConfiguredModel[]{new ConfiguredModel(models().withExistingParent(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + blight, "block/block")
+					.texture("particle", prefix(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + 0)).customLoader(CompositeModelBuilder::begin)
+					.child("zero", zero)
+					.child("dust", this.makeEmissiveBlockAll(block.getId().getPath() + "/" + blight, TRANSLUCENT, 15).texture("all", prefix(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + blight))).end())
+			};
+		});
+	}
+
+	protected BlockModelBuilder makeTintedBlockAll(String name, ResourceLocation renderType) {
+		return this.makeTintedBlock(name, renderType)
+				.texture("north", "#all").texture("south", "#all").texture("east", "#all")
+				.texture("west", "#all").texture("up", "#all").texture("down", "#all");
+	}
+
+	protected BlockModelBuilder makeTintedBlock(String name, ResourceLocation renderType) {
+		return models().withExistingParent(name, "minecraft:block/block").renderType(renderType).texture("particle", "#north")
+				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
+				.face(Direction.NORTH).texture("#north").cullface(Direction.NORTH).tintindex(0).end()
+				.face(Direction.EAST).texture("#east").cullface(Direction.EAST).tintindex(0).end()
+				.face(Direction.SOUTH).texture("#south").cullface(Direction.SOUTH).tintindex(0).end()
+				.face(Direction.WEST).texture("#west").cullface(Direction.WEST).tintindex(0).end()
+				.face(Direction.UP).texture("#up").cullface(Direction.UP).tintindex(0).end()
+				.face(Direction.DOWN).texture("#down").cullface(Direction.DOWN).tintindex(0).end().end();
+	}
+
+	protected BlockModelBuilder makeEmissiveBlockAll(String name, ResourceLocation renderType, int emissivity) {
+		return this.makeEmissiveBlock(name, renderType, emissivity)
+				.texture("north", "#all").texture("south", "#all").texture("east", "#all")
+				.texture("west", "#all").texture("up", "#all").texture("down", "#all");
+	}
+
+	protected BlockModelBuilder makeEmissiveBlock(String name, ResourceLocation renderType, int emissivity) {
+		return models().withExistingParent(name, "minecraft:block/block").renderType(renderType).texture("particle", "#north")
+				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
+				.face(Direction.NORTH).texture("#north").cullface(Direction.NORTH).emissivity(emissivity, emissivity).tintindex(0).end()
+				.face(Direction.EAST).texture("#east").cullface(Direction.EAST).emissivity(emissivity, emissivity).tintindex(0).end()
+				.face(Direction.SOUTH).texture("#south").cullface(Direction.SOUTH).emissivity(emissivity, emissivity).tintindex(0).end()
+				.face(Direction.WEST).texture("#west").cullface(Direction.WEST).emissivity(emissivity, emissivity).tintindex(0).end()
+				.face(Direction.UP).texture("#up").cullface(Direction.UP).emissivity(emissivity, emissivity).tintindex(0).end()
+				.face(Direction.DOWN).texture("#down").cullface(Direction.DOWN).emissivity(emissivity, emissivity).tintindex(0).end().end();
 	}
 
 	protected void simpleBlockExisting(Block b) {

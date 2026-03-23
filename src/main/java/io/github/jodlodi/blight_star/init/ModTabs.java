@@ -22,6 +22,7 @@ public class ModTabs {
 			.icon(() -> ModItems.ROT_BERRY.get().getDefaultInstance())
 			.displayItems((parameters, output) -> {
 				output.accept(ModItems.ROT_BLOCK);
+				output.accept(ModItems.SPECTRAL_SAND);
 				output.accept(ModItems.SPROUT);
 				output.accept(ModItems.ROT_BERRY);
 			}).build());

@@ -2,6 +2,7 @@ package io.github.jodlodi.blight_star.init;
 
 import io.github.jodlodi.blight_star.BlightStar;
 import io.github.jodlodi.blight_star.block.RotBlock;
+import io.github.jodlodi.blight_star.block.SpectralSandBlock;
 import io.github.jodlodi.blight_star.block.SproutBlock;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
@@ -27,6 +28,18 @@ public class ModBlocks {
 			.randomTicks()
 			.strength(0.5F)
 			.speedFactor(0.8F)
+			.isValidSpawn(Blocks::always)
+			.isRedstoneConductor(ModBlocks::always)
+			.isViewBlocking(ModBlocks::always)
+			.isSuffocating(ModBlocks::always)
+	));
+
+	public static final DeferredBlock<SpectralSandBlock> SPECTRAL_SAND = BLOCKS.register("spectral_sand", () -> new SpectralSandBlock(BlockBehaviour.Properties.of()
+			.mapColor(MapColor.SNOW)
+			.sound(SoundType.SAND)
+			.randomTicks()
+			.strength(0.5F)
+			.speedFactor(1.1F)
 			.isValidSpawn(Blocks::always)
 			.isRedstoneConductor(ModBlocks::always)
 			.isViewBlocking(ModBlocks::always)

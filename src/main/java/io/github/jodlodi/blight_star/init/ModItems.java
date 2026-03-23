@@ -19,5 +19,6 @@ public class ModItems {
 			.alwaysEdible().nutrition(1).saturationModifier(2f).build()));
 
 	public static final DeferredItem<BlockItem> ROT_BLOCK = ITEMS.registerSimpleBlockItem("rot_block", ModBlocks.ROT_BLOCK);
+	public static final DeferredItem<BlockItem> SPECTRAL_SAND = ITEMS.registerSimpleBlockItem("spectral_sand", ModBlocks.SPECTRAL_SAND);
 	public static final DeferredItem<BlockItem> SPROUT = ITEMS.registerSimpleBlockItem("sprout", ModBlocks.SPROUT);
 }
