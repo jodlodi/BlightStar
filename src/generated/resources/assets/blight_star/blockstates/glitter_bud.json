@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "blight=0": {
+      "model": "blight_star:block/glitter_bud/0"
+    },
+    "blight=1": {
+      "model": "blight_star:block/glitter_bud/1"
+    },
+    "blight=2": {
+      "model": "blight_star:block/glitter_bud/2"
+    },
+    "blight=3": {
+      "model": "blight_star:block/glitter_bud/3"
+    },
+    "blight=4": {
+      "model": "blight_star:block/glitter_bud/4"
+    },
+    "blight=5": {
+      "model": "blight_star:block/glitter_bud/5"
+    }
+  }
+}

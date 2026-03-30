@@ -1,11 +1,9 @@
 package io.github.jodlodi.blight_star.init;
 
 import io.github.jodlodi.blight_star.BlightStar;
-import io.github.jodlodi.blight_star.block.SpectralSandBlock;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import javax.annotation.ParametersAreNonnullByDefault;

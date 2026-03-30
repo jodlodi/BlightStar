@@ -29,8 +29,8 @@ public class ItemModelGen extends ItemModelProvider {
 	protected void registerModels() {
 		this.singleTex(ModItems.ROT_BERRY);
 		this.toBlockModel(ModBlocks.ROT_BLOCK.get(), BuiltInRegistries.BLOCK.getKey(ModBlocks.ROT_BLOCK.get()).getPath() + "_0");
-		this.toBlockModel(ModBlocks.SPECTRAL_SAND.get(), BuiltInRegistries.BLOCK.getKey(ModBlocks.SPECTRAL_SAND.get()).getPath() + "/4");
-		this.toBlock(ModBlocks.SPROUT.get());
+		this.toBlockModel(ModBlocks.LUMINESAND.get(), BuiltInRegistries.BLOCK.getKey(ModBlocks.LUMINESAND.get()).getPath() + "/4");
+		this.toBlockModel(ModBlocks.GLITTER_BUD.get(), BuiltInRegistries.BLOCK.getKey(ModBlocks.GLITTER_BUD.get()).getPath() + "/4");
 	}
 
 	private ItemModelBuilder singleTex(DeferredHolder<?, ?> item) {

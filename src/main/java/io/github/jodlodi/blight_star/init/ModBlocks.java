@@ -2,8 +2,8 @@ package io.github.jodlodi.blight_star.init;
 
 import io.github.jodlodi.blight_star.BlightStar;
 import io.github.jodlodi.blight_star.block.RotBlock;
-import io.github.jodlodi.blight_star.block.SpectralSandBlock;
-import io.github.jodlodi.blight_star.block.SproutBlock;
+import io.github.jodlodi.blight_star.block.LumineSandBlock;
+import io.github.jodlodi.blight_star.block.GlitterBudBlock;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -34,26 +34,27 @@ public class ModBlocks {
 			.isSuffocating(ModBlocks::always)
 	));
 
-	public static final DeferredBlock<SpectralSandBlock> SPECTRAL_SAND = BLOCKS.register("spectral_sand", () -> new SpectralSandBlock(BlockBehaviour.Properties.of()
-			.mapColor(MapColor.SNOW)
+	public static final DeferredBlock<LumineSandBlock> LUMINESAND = BLOCKS.register("luminesand", () -> new LumineSandBlock(BlockBehaviour.Properties.of()
+			.mapColor(MapColor.TERRACOTTA_WHITE)
 			.sound(SoundType.SAND)
 			.randomTicks()
 			.strength(0.5F)
-			.speedFactor(1.1F)
+			.speedFactor(1.05F)
+			.lightLevel(state -> 1)
 			.isValidSpawn(Blocks::always)
 			.isRedstoneConductor(ModBlocks::always)
 			.isViewBlocking(ModBlocks::always)
 			.isSuffocating(ModBlocks::always)
 	));
 
-	public static final DeferredBlock<SproutBlock> SPROUT = BLOCKS.register("sprout", () -> new SproutBlock(BlockBehaviour.Properties.of()
-			.mapColor(MapColor.TERRACOTTA_GREEN)
-			.sound(SoundType.MUD)
+	public static final DeferredBlock<GlitterBudBlock> GLITTER_BUD = BLOCKS.register("glitter_bud", () -> new GlitterBudBlock(BlockBehaviour.Properties.of()
+			.mapColor(MapColor.SNOW)
+			.sound(SoundType.CALCITE)
 			.randomTicks()
 			.forceSolidOn()
 			.requiresCorrectToolForDrops()
 			.strength(3.0F, 6.0F)
-			.speedFactor(0.8F)
+			.lightLevel(state -> 8)
 			.noOcclusion()
 	));
 

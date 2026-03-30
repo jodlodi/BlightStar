@@ -10,5 +10,5 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class ModInterestPoints {
 	public static final DeferredRegister<PoiType> POINTS_OF_INTEREST = DeferredRegister.create(Registries.POINT_OF_INTEREST_TYPE, BlightStar.ID);
 
-	public static final DeferredHolder<PoiType, PoiType> SPROUT = POINTS_OF_INTEREST.register("sprout", () -> new PoiType(ImmutableSet.copyOf(ModBlocks.SPROUT.get().getStateDefinition().getPossibleStates()), 0, 1));
+	public static final DeferredHolder<PoiType, PoiType> SPROUT = POINTS_OF_INTEREST.register("sprout", () -> new PoiType(ImmutableSet.copyOf(ModBlocks.GLITTER_BUD.get().getStateDefinition().getPossibleStates()), 0, 1));
 }

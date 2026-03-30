@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "blight_star:block/spectral_sand/0"
+    "all": "blight_star:block/glitter_bud/0"
   }
 }

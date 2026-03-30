@@ -75,7 +75,7 @@
       ],
       "render_type": "minecraft:translucent",
       "textures": {
-        "all": "blight_star:block/spectral_sand/5",
+        "all": "blight_star:block/luminesand/1",
         "down": "#all",
         "east": "#all",
         "north": "#all",
@@ -88,7 +88,7 @@
     "zero": {
       "parent": "minecraft:block/cube_all",
       "textures": {
-        "all": "blight_star:block/spectral_sand/0"
+        "all": "blight_star:block/luminesand/0"
       }
     }
   },
@@ -98,6 +98,6 @@
   ],
   "loader": "neoforge:composite",
   "textures": {
-    "particle": "blight_star:block/spectral_sand/0"
+    "particle": "blight_star:block/luminesand/0"
   }
 }

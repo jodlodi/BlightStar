@@ -1,9 +1,12 @@
 package io.github.jodlodi.blight_star.client;
 
 import io.github.jodlodi.blight_star.BlightStar;
+import io.github.jodlodi.blight_star.block.util.AutoBlockColor;
 import io.github.jodlodi.blight_star.init.ModBlocks;
+import io.github.jodlodi.blight_star.init.ModItems;
 import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.BlockItem;
@@ -22,30 +25,39 @@ public class ColorHandler {
 	private static final PerlinNoise3D HUE_NOISE = new PerlinNoise3D(92445514L);
 	private static final PerlinNoise3D SATURATION_NOISE = new PerlinNoise3D(56491515L);
 
+	public static final BlockColor LUMINESAND = (state, level, pos, tintIndex) -> {
+		if (pos == null) pos = Minecraft.getInstance().player != null ? Minecraft.getInstance().player.blockPosition() : null;
+		if (pos == null) return 0xFFFFFFFF;
+		return Color.HSBtoRGB(
+				(float) HUE_NOISE.noise(pos, 0.025) * 2,
+				(float) SATURATION_NOISE.noise(pos, 0.125) * 0.5F + 0.25F,
+				1.0F
+		);
+	};
+
 	@SubscribeEvent
 	public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
-		event.register((state, level, pos, tintIndex) -> {
-			if (pos == null) return 0xFFFFFFFF;
-			return Color.HSBtoRGB(
-					(float) HUE_NOISE.noise(pos, 0.025) * 2,
-					(float) SATURATION_NOISE.noise(pos, 0.125) * 0.5F + 0.25F,
-					1.0F
-			);
-		}, ModBlocks.SPECTRAL_SAND.get());
+		ModBlocks.BLOCKS.getEntries().forEach(holder -> {
+			if (holder.get() instanceof AutoBlockColor autoBlockColor) {
+				event.register(autoBlockColor.getColor(), holder.get());
+			}
+		});
 	}
 
 	@SubscribeEvent
 	public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
-		BlockColors blockColors = event.getBlockColors();
-		event.register((stack, tintIndex) -> stack.getItem() instanceof BlockItem item ? blockColors.getColor(item.getBlock().defaultBlockState(), null, null, tintIndex) : -1, ModBlocks.SPECTRAL_SAND.get());
+		ModItems.ITEMS.getEntries().forEach(holder -> {
+			if (holder.get() instanceof BlockItem item && item.getBlock() instanceof AutoBlockColor autoBlockColor) {
+				event.register(((stack, tintIndex) -> autoBlockColor.getColor().getColor(item.getBlock().defaultBlockState(), null, null, tintIndex)), item);
+			}
+		});
 	}
 
 	public static class PerlinNoise3D {
 		private final int[] permutation;
-		private static final int[] grad3 = {1, 1, 0, 1, 0, 1, 0, -1, 1, -1, 0, -1, 0, -1, -1, 1};
 
 		public PerlinNoise3D(long seed) {
-			permutation = new int[512];
+			this.permutation = new int[512];
 			RandomSource rand = RandomSource.create(seed);
 			int[] p = new int[256];
 
@@ -55,12 +67,11 @@ public class ColorHandler {
 
 			for (int i = 255; i >= 0; i--) {
 				int j = rand.nextInt(i + 1);
-				// Swap
 				int temp = p[i];
 				p[i] = p[j];
 				p[j] = temp;
-				permutation[i] = p[i];
-				permutation[i + 256] = p[i]; // Duplicate
+				this.permutation[i] = p[i];
+				this.permutation[i + 256] = p[i];
 			}
 		}
 

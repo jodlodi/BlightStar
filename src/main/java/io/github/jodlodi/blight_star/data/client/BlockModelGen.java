@@ -1,7 +1,7 @@
 package io.github.jodlodi.blight_star.data.client;
 
 import io.github.jodlodi.blight_star.BlightStar;
-import io.github.jodlodi.blight_star.block.BlightBlock;
+import io.github.jodlodi.blight_star.block.util.Blighted;
 import io.github.jodlodi.blight_star.block.RotBlock;
 import io.github.jodlodi.blight_star.init.ModBlocks;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -35,7 +35,8 @@ public class BlockModelGen extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
-		this.makeBlightBlock(ModBlocks.SPECTRAL_SAND);
+		this.makeBlightBlock(ModBlocks.LUMINESAND);
+		this.makeBlightBlock(ModBlocks.GLITTER_BUD);
 
 		this.getVariantBuilder(ModBlocks.ROT_BLOCK.get()).forAllStates(state -> {
 			switch (state.getValue(RotBlock.AGE)) {
@@ -56,21 +57,20 @@ public class BlockModelGen extends BlockStateProvider {
 				}
 			}
 		});
-
-		this.simpleBlockExisting(ModBlocks.SPROUT.get());
 	}
 
-	public <T extends Block & BlightBlock> void makeBlightBlock(DeferredBlock<T> block) {
-		BlockModelBuilder zero = models().withExistingParent(block.getId().getPath() + "/zero", "block/cube_all").texture("all", prefix(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + 0));
+	public <T extends Block & Blighted> void makeBlightBlock(DeferredBlock<T> block) {
 		this.getVariantBuilder(block.get()).forAllStates(state -> {
-			int blight = state.getValue(block.get().getProperty());
-			if (blight == 0) return ConfiguredModel.builder().modelFile(zero).build();
+			int blight = state.getValue(block.get().getBlightProperty());
 
-			return new ConfiguredModel[]{new ConfiguredModel(models().withExistingParent(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + blight, "block/block")
+			if (blight == 0) return ConfiguredModel.builder().modelFile(this.models().withExistingParent(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + blight,"block/cube_all").texture("all", prefix(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + 0))).build();
+
+			return ConfiguredModel.builder().modelFile(this.models().withExistingParent(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + blight, "block/block")
 					.texture("particle", prefix(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + 0)).customLoader(CompositeModelBuilder::begin)
-					.child("zero", zero)
-					.child("dust", this.makeEmissiveBlockAll(block.getId().getPath() + "/" + blight, TRANSLUCENT, 15).texture("all", prefix(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + blight))).end())
-			};
+					.child("zero", this.nestedFromParent("block/cube_all").texture("all", prefix(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + 0)))
+					.child("dust", this.nestedEmissiveBlockAll(TRANSLUCENT, 15).texture("all", prefix(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + blight)))
+					.end()
+			).build();
 		});
 	}
 
@@ -108,8 +108,33 @@ public class BlockModelGen extends BlockStateProvider {
 				.face(Direction.DOWN).texture("#down").cullface(Direction.DOWN).emissivity(emissivity, emissivity).tintindex(0).end().end();
 	}
 
+	protected BlockModelBuilder nestedEmissiveBlockAll(ResourceLocation renderType, int emissivity) {
+		return this.nestedEmissiveBlock(renderType, emissivity)
+				.texture("north", "#all").texture("south", "#all").texture("east", "#all")
+				.texture("west", "#all").texture("up", "#all").texture("down", "#all");
+	}
+
+	protected BlockModelBuilder nestedEmissiveBlock(ResourceLocation renderType, int emissivity) {
+		return this.nestedFromParent("block/block").renderType(renderType).texture("particle", "#north")
+				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
+				.face(Direction.NORTH).texture("#north").cullface(Direction.NORTH).emissivity(emissivity, emissivity).tintindex(0).end()
+				.face(Direction.EAST).texture("#east").cullface(Direction.EAST).emissivity(emissivity, emissivity).tintindex(0).end()
+				.face(Direction.SOUTH).texture("#south").cullface(Direction.SOUTH).emissivity(emissivity, emissivity).tintindex(0).end()
+				.face(Direction.WEST).texture("#west").cullface(Direction.WEST).emissivity(emissivity, emissivity).tintindex(0).end()
+				.face(Direction.UP).texture("#up").cullface(Direction.UP).emissivity(emissivity, emissivity).tintindex(0).end()
+				.face(Direction.DOWN).texture("#down").cullface(Direction.DOWN).emissivity(emissivity, emissivity).tintindex(0).end().end();
+	}
+
 	protected void simpleBlockExisting(Block b) {
 		this.simpleBlock(b, new ConfiguredModel(models().getExistingFile(prefix(name(b)))));
+	}
+
+	protected BlockModelBuilder nestedFromParent(String parent) {
+		return this.nestedFromParent(ResourceLocation.fromNamespaceAndPath("minecraft", parent));
+	}
+
+	protected BlockModelBuilder nestedFromParent(ResourceLocation parent) {
+		return this.models().nested().parent(this.models().getExistingFile(parent));
 	}
 
 	protected ResourceLocation key(Block block) {
