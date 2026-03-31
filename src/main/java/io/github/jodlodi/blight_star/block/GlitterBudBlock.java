@@ -22,7 +22,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public class GlitterBudBlock extends Block implements BlightSource<GlitterBudBlock>, AutoBlockColor {
 	public static final MapCodec<GlitterBudBlock> CODEC = simpleCodec(GlitterBudBlock::new);
-	public static final SourceBlightProperty BLIGHT = new SourceBlightProperty("blight", 5);
+	public static final SourceBlightProperty BLIGHT = new SourceBlightProperty("blight", 8);
 
 	public GlitterBudBlock(Properties properties) {
 		super(properties);

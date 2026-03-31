@@ -12,8 +12,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 
@@ -21,9 +23,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class LumineSandBlock extends Block implements BlightVessel<LumineSandBlock>, AutoBlockColor {
+public class LumineSandBlock extends FallingBlock implements BlightVessel<LumineSandBlock>, AutoBlockColor {
 	public static final MapCodec<LumineSandBlock> CODEC = simpleCodec(LumineSandBlock::new);
-	public static final VesselBlightProperty BLIGHT = new VesselBlightProperty("blight", 5);
+	public static final VesselBlightProperty BLIGHT = new VesselBlightProperty("blight", 7);
 
 	public LumineSandBlock(Properties properties) {
 		super(properties);
@@ -33,6 +35,11 @@ public class LumineSandBlock extends Block implements BlightVessel<LumineSandBlo
 	@Override
 	public BlockColor getColor() {
 		return ColorHandler.LUMINESAND;
+	}
+
+	@Override
+	public int getDustColor(BlockState state, BlockGetter level, BlockPos pos) {
+		return 0xFFD0D0D0;
 	}
 
 	@Override

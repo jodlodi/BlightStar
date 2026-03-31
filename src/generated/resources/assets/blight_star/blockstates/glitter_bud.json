@@ -3,8 +3,8 @@
     "blight=0": {
       "model": "blight_star:block/glitter_bud/0"
     },
-    "blight=n5": {
-      "model": "blight_star:block/glitter_bud/5"
+    "blight=n8": {
+      "model": "blight_star:block/glitter_bud/8"
     },
     "blight=p1": {
       "model": "blight_star:block/glitter_bud/1"
@@ -20,6 +20,15 @@
     },
     "blight=p5": {
       "model": "blight_star:block/glitter_bud/5"
+    },
+    "blight=p6": {
+      "model": "blight_star:block/glitter_bud/6"
+    },
+    "blight=p7": {
+      "model": "blight_star:block/glitter_bud/7"
+    },
+    "blight=p8": {
+      "model": "blight_star:block/glitter_bud/8"
     }
   }
 }

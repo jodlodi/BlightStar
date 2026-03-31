@@ -18,6 +18,12 @@
     "blight=n5": {
       "model": "blight_star:block/luminesand/5"
     },
+    "blight=n6": {
+      "model": "blight_star:block/luminesand/6"
+    },
+    "blight=n7": {
+      "model": "blight_star:block/luminesand/7"
+    },
     "blight=p2": {
       "model": "blight_star:block/luminesand/2"
     },
@@ -29,6 +35,12 @@
     },
     "blight=p5": {
       "model": "blight_star:block/luminesand/5"
+    },
+    "blight=p6": {
+      "model": "blight_star:block/luminesand/6"
+    },
+    "blight=p7": {
+      "model": "blight_star:block/luminesand/7"
     }
   }
 }
