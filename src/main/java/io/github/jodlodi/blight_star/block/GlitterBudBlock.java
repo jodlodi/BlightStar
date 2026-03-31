@@ -15,7 +15,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -23,7 +22,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public class GlitterBudBlock extends Block implements BlightSource<GlitterBudBlock>, AutoBlockColor {
 	public static final MapCodec<GlitterBudBlock> CODEC = simpleCodec(GlitterBudBlock::new);
-	public static final IntegerProperty BLIGHT = Blighted.createProperty(5);
+	public static final SourceBlightProperty BLIGHT = new SourceBlightProperty("blight", 5);
 
 	public GlitterBudBlock(Properties properties) {
 		super(properties);
@@ -49,37 +48,45 @@ public class GlitterBudBlock extends Block implements BlightSource<GlitterBudBlo
 	protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (!level.isAreaLoaded(pos, 3)) return;
 
-		int blight = state.getValue(this.getBlightProperty());
+		int blight = this.getBlight(state);
 
 		if (blight < this.maxBlight() && random.nextInt(20) == 0) {
 			level.setBlock(pos, state.setValue(this.getBlightProperty(), ++blight), GlitterBudBlock.UPDATE_ALL);
 		}
 
-		int spread = blight - 1;
+		if (blight <= 1) return;
 
-		if (spread <= 0) return;
+		for (Direction direction : Direction.allShuffled(random)) {
+			BlockPos relative = pos.relative(direction);
+			BlockState relativeState = level.getBlockState(relative);
 
-		Direction face = Direction.getRandom(random);
-		BlockPos relative = pos.relative(face);
-		BlockState relativeState = level.getBlockState(relative);
-
-		if (relativeState.getBlock() instanceof Blighted blighted) {
-			int nowBlight = relativeState.getValue(blighted.getBlightProperty());
-			if (nowBlight < spread) {
-				level.setBlock(relative, relativeState.setValue(blighted.getBlightProperty(), spread), Block.UPDATE_ALL);
+			if (relativeState.getBlock() instanceof Blighted blighted) {
+				int nowBlight = blighted.getBlight(relativeState);
+				int spread = blighted.spreadThin(relative, blight);
+				if (nowBlight < spread) {
+					level.setBlock(relative, blighted.setTo(relativeState, relative, spread), Block.UPDATE_ALL);
+					return;
+				}
+			} else if (relativeState.isSolidRender(level, relative)) {
+				int spread = ModBlocks.LUMINESAND.get().spreadThin(relative, blight);
+				if (spread <= 0) continue;
+				level.setBlock(relative, ModBlocks.LUMINESAND.get().setTo(ModBlocks.LUMINESAND.get().defaultBlockState(), relative, spread), Block.UPDATE_ALL);
+				return;
 			}
-		} else if (relativeState.isSolidRender(level, relative)) {
-			level.setBlock(relative, ModBlocks.LUMINESAND.get().defaultBlockState().setValue(ModBlocks.LUMINESAND.get().getBlightProperty(), spread), Block.UPDATE_ALL);
+		}
+
+		if (blight == this.maxBlight()) {
+			level.setBlock(pos, this.lieDormant(state), GlitterBudBlock.UPDATE_ALL);
 		}
 	}
 
 	@Override
 	protected boolean isRandomlyTicking(BlockState state) {
-		return super.isRandomlyTicking(state) && state.getValue(BLIGHT) > 0;
+		return super.isRandomlyTicking(state) && !this.isDormant(state);
 	}
 
 	@Override
-	public IntegerProperty getBlightProperty() {
+	public BlightProperty getBlightProperty() {
 		return BLIGHT;
 	}
 }

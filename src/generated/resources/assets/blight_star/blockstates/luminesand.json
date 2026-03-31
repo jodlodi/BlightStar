@@ -3,19 +3,31 @@
     "blight=0": {
       "model": "blight_star:block/luminesand/0"
     },
-    "blight=1": {
+    "blight=n1": {
       "model": "blight_star:block/luminesand/1"
     },
-    "blight=2": {
+    "blight=n2": {
       "model": "blight_star:block/luminesand/2"
     },
-    "blight=3": {
+    "blight=n3": {
       "model": "blight_star:block/luminesand/3"
     },
-    "blight=4": {
+    "blight=n4": {
       "model": "blight_star:block/luminesand/4"
     },
-    "blight=5": {
+    "blight=n5": {
+      "model": "blight_star:block/luminesand/5"
+    },
+    "blight=p2": {
+      "model": "blight_star:block/luminesand/2"
+    },
+    "blight=p3": {
+      "model": "blight_star:block/luminesand/3"
+    },
+    "blight=p4": {
+      "model": "blight_star:block/luminesand/4"
+    },
+    "blight=p5": {
       "model": "blight_star:block/luminesand/5"
     }
   }

@@ -2,7 +2,6 @@ package io.github.jodlodi.blight_star.client;
 
 import io.github.jodlodi.blight_star.BlightStar;
 import io.github.jodlodi.blight_star.block.util.AutoBlockColor;
-import io.github.jodlodi.blight_star.init.ModBlocks;
 import io.github.jodlodi.blight_star.init.ModItems;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
@@ -34,15 +33,6 @@ public class ColorHandler {
 				1.0F
 		);
 	};
-
-	@SubscribeEvent
-	public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
-		ModBlocks.BLOCKS.getEntries().forEach(holder -> {
-			if (holder.get() instanceof AutoBlockColor autoBlockColor) {
-				event.register(autoBlockColor.getColor(), holder.get());
-			}
-		});
-	}
 
 	@SubscribeEvent
 	public static void registerItemColors(RegisterColorHandlersEvent.Item event) {

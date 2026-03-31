@@ -41,21 +41,15 @@ public class ModBlocks {
 			.strength(0.5F)
 			.speedFactor(1.05F)
 			.lightLevel(state -> 1)
-			.isValidSpawn(Blocks::always)
-			.isRedstoneConductor(ModBlocks::always)
-			.isViewBlocking(ModBlocks::always)
-			.isSuffocating(ModBlocks::always)
 	));
 
 	public static final DeferredBlock<GlitterBudBlock> GLITTER_BUD = BLOCKS.register("glitter_bud", () -> new GlitterBudBlock(BlockBehaviour.Properties.of()
 			.mapColor(MapColor.SNOW)
 			.sound(SoundType.CALCITE)
 			.randomTicks()
-			.forceSolidOn()
-			.requiresCorrectToolForDrops()
 			.strength(3.0F, 6.0F)
-			.lightLevel(state -> 8)
-			.noOcclusion()
+			.requiresCorrectToolForDrops()
+			.lightLevel(state -> 1)
 	));
 
 	private static boolean always(BlockState state, BlockGetter blockGetter, BlockPos pos) {

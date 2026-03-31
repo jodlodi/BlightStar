@@ -1,8 +1,8 @@
 package io.github.jodlodi.blight_star.data.client;
 
 import io.github.jodlodi.blight_star.BlightStar;
-import io.github.jodlodi.blight_star.block.util.Blighted;
 import io.github.jodlodi.blight_star.block.RotBlock;
+import io.github.jodlodi.blight_star.block.util.Blighted;
 import io.github.jodlodi.blight_star.init.ModBlocks;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Direction;
@@ -19,6 +19,8 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.ArrayList;
+import java.util.List;
 
 import static io.github.jodlodi.blight_star.BlightStar.prefix;
 
@@ -60,18 +62,22 @@ public class BlockModelGen extends BlockStateProvider {
 	}
 
 	public <T extends Block & Blighted> void makeBlightBlock(DeferredBlock<T> block) {
-		this.getVariantBuilder(block.get()).forAllStates(state -> {
-			int blight = state.getValue(block.get().getBlightProperty());
+		List<ConfiguredModel[]> models = new ArrayList<>();
 
-			if (blight == 0) return ConfiguredModel.builder().modelFile(this.models().withExistingParent(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + blight,"block/cube_all").texture("all", prefix(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + 0))).build();
+		for (int blight = 0; blight <= block.get().maxBlight(); blight++) {
+			if (blight == 0) {
+				models.add(ConfiguredModel.builder().modelFile(this.models().withExistingParent(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + blight, "block/cube_all").texture("all", prefix(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + 0))).build());
+			} else {
+				models.add(ConfiguredModel.builder().modelFile(this.models().withExistingParent(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + blight, "block/block")
+						.texture("particle", prefix(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + 0)).customLoader(CompositeModelBuilder::begin)
+						.child("zero", this.nestedFromParent("block/cube_all").texture("all", prefix(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + 0)))
+						.child("dust", this.nestedEmissiveBlockAll(TRANSLUCENT, 15).texture("all", prefix(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + blight)))
+						.end()
+				).build());
+			}
+		}
 
-			return ConfiguredModel.builder().modelFile(this.models().withExistingParent(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + blight, "block/block")
-					.texture("particle", prefix(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + 0)).customLoader(CompositeModelBuilder::begin)
-					.child("zero", this.nestedFromParent("block/cube_all").texture("all", prefix(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + 0)))
-					.child("dust", this.nestedEmissiveBlockAll(TRANSLUCENT, 15).texture("all", prefix(ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath() + "/" + blight)))
-					.end()
-			).build();
-		});
+		this.getVariantBuilder(block.get()).forAllStates(state -> models.get(block.get().getBlight(state)));
 	}
 
 	protected BlockModelBuilder makeTintedBlockAll(String name, ResourceLocation renderType) {
